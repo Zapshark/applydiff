@@ -10,9 +10,9 @@ A lightweight plugin for JetBrains IDEs (PHPStorm, IntelliJ IDEA, and others) th
 - Apply **fenced ```diff``` blocks** with `+` and `-` lines, even if no filenames are given.
 - Works on the **current editor file only** — no need for VCS patch headers.
 - Built-in **preview**: shows a side-by-side diff of *Current* vs *Patched* before applying.
-- Configured with a default shortcut:  
-  - **Windows/Linux**: `Ctrl + Alt + Shift + D`  
-  - **macOS**: `⌘ + ⌥ + ⇧ + D`
+- Configured with a default shortcut:
+    - **Windows/Linux**: `Ctrl + Alt + Shift + D`
+    - **macOS**: `⌘ + ⌥ + ⇧ + D`
 
 ---
 
@@ -38,12 +38,12 @@ A lightweight plugin for JetBrains IDEs (PHPStorm, IntelliJ IDEA, and others) th
    ```
 
 2. In the editor:
-   - Right-click → **Apply Diff from Clipboard (Current File)**  
-   - Or press the shortcut.
+    - Right-click → **Apply Diff from Clipboard (Current File)**
+    - Or press the shortcut.
 
-3. Review the preview diff window.  
-   - Click **Apply** to patch the file.  
-   - Cancel if you don’t want to apply.
+3. Review the preview diff window.
+    - Click **Apply** to patch the file.
+    - Cancel if you don’t want to apply.
 
 ---
 
@@ -51,9 +51,9 @@ A lightweight plugin for JetBrains IDEs (PHPStorm, IntelliJ IDEA, and others) th
 - For full patch files with filenames, you can still use JetBrains’ built-in:  
   **VCS → Apply Patch from Clipboard**.
 - This plugin shines when working with diffs copied from:
-  - ChatGPT / other AI assistants,
-  - GitHub comments (`suggestion` blocks),
-  - Snippets missing file headers.
+    - ChatGPT / other AI assistants,
+    - GitHub comments (`suggestion` blocks),
+    - Snippets missing file headers.
 
 ---
 
