@@ -1,0 +1,18 @@
+<idea-plugin>
+    <id>com.zapshark.applydiff</id>
+    <name>Apply Diff to Current File</name>
+    <vendor email="opensource@zapshark.com">Zapshark Technologies</vendor>
+    <version>0.2.1</version>
+    <description>Apply clipboard diff/suggestion blocks to the active editor file, with a tiny preview.</description>
+    <depends>com.intellij.modules.platform</depends>
+
+    <actions>
+        <action id="com.zapshark.applydiff.applydiff"
+                class="com.zapshark.applydiff.ApplyDiffFromClipboardAction"
+                text="Apply Diff from Clipboard (Current File)"
+                description="Parses ChatGPT/udiff blocks and applies to the current editor (with preview).">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift D"/>
+        </action>
+    </actions>
+</idea-plugin>
