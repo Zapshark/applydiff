@@ -2,7 +2,7 @@
     <id>com.zapshark.applydiff</id>
     <name>Apply Diff to Current File</name>
     <vendor email="opensource@zapshark.com">Zapshark Technologies</vendor>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
     <description>Apply clipboard diff/suggestion blocks to the active editor file, with a tiny preview.</description>
     <depends>com.intellij.modules.platform</depends>
 
