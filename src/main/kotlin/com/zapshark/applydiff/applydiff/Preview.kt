@@ -26,16 +26,28 @@ object Preview {
                 edits += Triple(selection.startOffset, selection.endOffset, h.newLines.joinToString("\n"))
             } else {
                 val range = HunkApplier.docRangeForLines(doc, h.startLineNew, h.oldCount)
+                var replacement = h.newLines.joinToString("\n")
                 if (!force) {
                     val oldText = doc.getText(range)
-                    val oldLinesNorm = h.oldLines.joinToString("\n").replace("\r\n", "\n").trimEnd()
-                    val docNorm = oldText.replace("\r\n", "\n").trimEnd()
-                    if (docNorm != oldLinesNorm) {
-                        // skip this edit in preview if not matching
-                        return@forEachIndexed
+                    val oldLinesDoc = oldText.replace("\r\n", "\n").split("\n")
+                    val oldLinesHunk = h.oldLines.map { it.replace("\r\n", "\n") }
+                    val strictMatch = oldLinesDoc.joinToString("\n").trimEnd() == oldLinesHunk.joinToString("\n").trimEnd()
+                    if (!strictMatch) {
+                        val sameIgnoringIndent = oldLinesDoc.size == oldLinesHunk.size &&
+                                oldLinesDoc.zip(oldLinesHunk).all { (a, b) -> a.trimStart() == b.trimStart() }
+                        if (!sameIgnoringIndent) {
+                            // skip this edit in preview if not matching (even loosely)
+                            return@forEachIndexed
+                        } else {
+                            // Re-indent new lines to match the document's leading whitespace per line
+                            replacement = h.newLines.mapIndexed { idx, nl ->
+                                val indent = oldLinesDoc.getOrNull(idx)?.takeWhile { it == ' ' || it == '\t' } ?: ""
+                                indent + nl.trimStart()
+                            }.joinToString("\n")
+                        }
                     }
                 }
-                edits += Triple(range.startOffset, range.endOffset, h.newLines.joinToString("\n"))
+                edits += Triple(range.startOffset, range.endOffset, replacement)
             }
         }
 

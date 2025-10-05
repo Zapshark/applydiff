@@ -2,9 +2,23 @@
     <id>com.zapshark.applydiff</id>
     <name>Apply Diff to Current File</name>
     <vendor email="opensource@zapshark.com">Zapshark Technologies</vendor>
-    <version>0.2.2</version>
-    <description>Apply clipboard diff/suggestion blocks to the active editor file, with a tiny preview.</description>
+    <version>0.2.8</version>
+
+    <description>
+        Apply clipboard diff/suggestion blocks to the active editor file (or selection), with a tiny preview.
+        Simply copy the diff block and right-click on the open file and select "Apply Diff to Current File"!
+    </description>
+
     <depends>com.intellij.modules.platform</depends>
+
+    <!-- New: What's New support (notification group + startup hook) -->
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Group used by ShowWhatsNewOnUpdate to display the toast -->
+        <notificationGroup id="ApplyDiff Updates" displayType="BALLOON" isLogByDefault="true"/>
+
+        <!-- Runs on project open; shows What's New once after version change -->
+        <projectActivity implementation="com.zapshark.applydiff.ShowWhatsNewOnUpdate"/>
+    </extensions>
 
     <actions>
         <action id="com.zapshark.applydiff.applydiff"

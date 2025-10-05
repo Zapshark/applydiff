@@ -28,7 +28,7 @@ class ApplyDiffFromClipboardAction : AnAction() {
             return
         }
 
-        val diff = DiffParser.parse(text)
+        val diff = DiffParser.parseWithPrompt(project, text)
         if (diff.hunks.isEmpty() && diff.suggestionReplacement == null) {
             Messages.showErrorDialog(project, "No recognizable diff or suggestion found.", "Apply Diff")
             return
@@ -36,9 +36,12 @@ class ApplyDiffFromClipboardAction : AnAction() {
 
         // Determine selection range (fallback to whole doc)
         val selModel = editor.selectionModel
-        val selection = if (selModel.hasSelection())
+        val selection = if (selModel.hasSelection()) {
             TextRange(selModel.selectionStart, selModel.selectionEnd)
-        else TextRange(0, doc.textLength)
+        } else {
+            val caret = editor.caretModel.offset
+            TextRange(caret, caret) // insert at caret when no selection
+        }
 
         // Build preview text (non-forced by default)
         val build = Preview.buildPatchedText(doc, diff, force = false, selection = selection)
@@ -49,13 +52,13 @@ class ApplyDiffFromClipboardAction : AnAction() {
         // Confirm apply
         val res = Messages.showYesNoDialog(project, "Apply these changes to the current file?", "Apply Diff", "Apply", "Cancel", null)
         if (res == Messages.YES) {
-            apply(project, doc, diff, force = build.failures.isNotEmpty())
+            apply(project, doc, diff, force = build.failures.isNotEmpty(), selection = selection)
         }
     }
 
-    private fun apply(project: com.intellij.openapi.project.Project, doc: Document, diff: ParsedDiff, force: Boolean) {
+    private fun apply(project: com.intellij.openapi.project.Project, doc: Document, diff: ParsedDiff, force: Boolean, selection: TextRange) {
         WriteCommandAction.runWriteCommandAction(project) {
-            HunkApplier.apply(doc, diff, force)
+            HunkApplier.apply(doc, diff, force, selection)
         }
 
         Messages.showInfoMessage(project, "Applied.", "Apply Diff")
